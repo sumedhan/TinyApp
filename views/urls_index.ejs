@@ -6,11 +6,25 @@
   <body>
     <% include ../partials/_header %>
     <h4>URLs in TinyApps</h4>
-    <ol>
+    <table>
+      <th>Short URL</th>
+      <th>Long URL</th>
+      <th></th>
+      <th></th>
     <% for(var item in urls) {%>
-    <li><%= item%></li>
+    <tr>
+      <td><%= item%></td>
+      <td><%= urls[item]%></td>
+      <td>
+        <a href="./urls/<%= item%>">Edit</a>
+      </td>
+      <td>
+          <form method="POST" action="/urls/<%= item%>/delete">
+            <input type="submit" value="Delete"> 
+          </form>
+      </td>
     <% } %>
-  </ol>
+    </table>
     
     <% include ../partials/_footer%>
   </body>
