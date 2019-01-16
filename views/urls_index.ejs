@@ -4,16 +4,13 @@
     <title>URL Index</title>
   </head>
   <body>
-      <% include ../partials/_header %>
-    <p>
-      <% for(var item in urls) {%>
-      
-      <p><%= item%>
-      </p>
-      
-      <% } %>
-      
-    </p>
+    <% include ../partials/_header %>
+    <h4>URLs in TinyApps</h4>
+    <ol>
+    <% for(var item in urls) {%>
+    <li><%= item%></li>
+    <% } %>
+  </ol>
     
     <% include ../partials/_footer%>
   </body>

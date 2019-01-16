@@ -7,9 +7,12 @@
   </title>
 </head>
 <body>
-    <% include ../partials/_header %>
-  <p><%= shortURL + ' : ' + longURL%>
-  </p>
+  <% include ../partials/_header %>
+
+  <form method="POST" action="/urls/<%= shortURL%>/delete">
+    <label><%= shortURL + ' : ' + longURL%></label>
+    <input type="submit" value="Delete"> 
+  </form>
   <% include ../partials/_footer%>
 </body>
 </html>
