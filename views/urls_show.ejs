@@ -9,9 +9,14 @@
 <body>
   <% include ../partials/_header %>
 
-  <form method="POST" action="/urls/<%= shortURL%>/delete">
-    <label><%= shortURL + ' : ' + longURL%></label>
-    <input type="submit" value="Delete"> 
+  <h4>
+      Short URL: <%= shortURL %> <br> <br>
+      Long URL:  <%= longURL%>
+  </h4>
+
+  <form method="POST" action="/urls/<%= shortURL%>">
+    <input type="text" value="<%= longURL%>" name="updatedLongURL">
+    <input type="submit" value="Update"> 
   </form>
   <% include ../partials/_footer%>
 </body>
