@@ -1,11 +1,14 @@
-var express = require("express");
-var app = express();
-var PORT = 8080; // default port 8080
+const express = require("express");
+const app = express();
+const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
+
 
 app.set('view engine', 'ejs') 
 app.use(bodyParser.urlencoded({extended: true}));
-
+app.use(cookieParser());
+app.use(express.static('public'));
 
 function generateRandomString() {
   let randomString = '';
@@ -34,23 +37,36 @@ var urlDatabase = {
 app.get('/', (request, response) => {
   response.send('Hello!');
 });
+
+// Path that lists the url index
+app.get('/urls', (request, response) => {
+  response.render('urls_index', {
+    urls: urlDatabase,
+    username: request.cookies.username
+  });
+});
+
+//Path to generate a new tiny URL
+app.get('/urls/new', (request, response) => {
+  response.render('urls_new', {username: request.cookies.username});
+});
+
+//shows the short and long URL for a specific short URL
+app.get('/urls/:id', (request, response) => {
+  response.render('urls_show', {
+    shortURL: request.params.id,
+    longURL: urlDatabase[request.params.id],
+    username: request.cookies.username
+  });
+});
+
 //Path that returns current JSON of URLS
 app.get('/urls.json', (request, response) => {
   response.json(urlDatabase);
 });
-// Path that lists the url index
-app.get('/urls', (request, response) => {
-  response.render('urls_index', {urls: urlDatabase});
-});
-//Path to generate a new tiny URL
-app.get('/urls/new', (request, response) => {
-  response.render('urls_new');
-});
-//shows the short and long URL for a specific short URL
-app.get('/urls/:id', (request, response) => {
-  response.render('urls_show', {shortURL: request.params.id,
-                                longURL: urlDatabase[request.params.id] });
-});
+
+
+
 
 //Post function to accept a new long URL , gneerate a random shortURL and then add to database
 app.post("/urls", (request, response) => {
@@ -73,16 +89,31 @@ app.get("/u/:shortURL", (request, response) => {
   }
 });
 
+//Deletes URLS from database
 app.post("/urls/:id/delete", (request, response) => {
   let shortUrl = request.params.id;
   delete urlDatabase[shortUrl];
   response.redirect("/urls");
 });
 
+//Updates URLs in database
 app.post("/urls/:id", (request, response) => {
   let shortUrl = request.params.id;
   let longUrl = request.body.updatedLongURL;
   urlDatabase[shortUrl] = longUrl;
+  response.redirect("/urls");
+});
+
+//Login the user
+app.post("/login", (request, response) => {
+  let username = request.body.username;
+  response.cookie("username",username);
+  response.redirect("/urls");
+});
+
+//log out the user
+app.post("/logout", (request, response) => {
+  response.clearCookie("username");
   response.redirect("/urls");
 });
 
