@@ -1,0 +1,36 @@
+<!-- views/partials/_header.ejs -->
+<link href="style.css" rel="stylesheet" type="text/css">
+<div class="page-header">
+  <style>
+    h1 {
+      background: #CDCDCD;
+      margin: 0;
+      padding: 5px;
+      color: red;
+    }
+    h6 {
+      margin: 0;
+      padding: 5px;
+    }
+  </style>
+  
+  <h1>TinyApp</h1>
+
+  <% if (!username) {%>
+  <!-- Login Form-->
+  <form id="login" method='POST' action='/login'>
+    <input type="text" name="username" placeholder="your username">
+    <input type="submit" value="Log in">
+  </form>
+  <% } else {%>
+
+  <!-- Logout-->
+  <h5><%= username%> is logged in.</h5>
+  <form id="logout" method='POST' action='/logout'>
+    <input type="submit" value="Logout">
+  </form>
+  
+  <% } %>
+
+  <h6>Tinifying URLS.</h6>
+</div>

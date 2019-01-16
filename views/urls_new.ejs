@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Tinify a new URL</title>
+  <style>
+    label, input {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <% include ../partials/_header%>
+  <form action="/urls" method="POST" style="margin:30px;">
+    <label for="longURL">Enter a URL:</label>
+    <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
+    <input type="submit" value="Submit">
+  </form>
+  <% include ../partials/_footer%>
+</body>
+</html>
