@@ -57,9 +57,14 @@ app.post("/urls", (request, response) => {
   //request.body uses the package body parser to encode it in the key value pairs defined in the form tag
   let shortURL = generateRandomString();
   urlDatabase[shortURL] = request.body.longURL;
-  response.send("Ok");         
+  response.redirect(`/urls/${shortURL}`);         
 });
 
+// Redirect short URLs to the correct long URL
+app.get("/u/:shortURL", (request, response) => {
+  let longURL = urlDatabase[request.params.shortURL];
+  response.redirect(longURL);
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
