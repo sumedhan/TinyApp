@@ -62,10 +62,18 @@ app.post("/urls", (request, response) => {
 
 // Redirect short URLs to the correct long URL
 app.get("/u/:shortURL", (request, response) => {
-  let longURL = urlDatabase[request.params.shortURL];
+  let shortURL = request.params.shortURL;
+  //checks if the short url exists in our database
+  if(urlDatabase[shortURL]) {
+  let longURL = urlDatabase[shortUrl];
   response.redirect(longURL);
+  } else {
+    let status = 301;
+    response.sendStatus(status);
+  }
 });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
+;
