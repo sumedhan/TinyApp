@@ -68,7 +68,7 @@ app.get("/u/:shortURL", (request, response) => {
   let longURL = urlDatabase[shortUrl];
   response.redirect(longURL);
   } else {
-    let status = 301;
+    let status = 400;
     response.sendStatus(status);
   }
 });
