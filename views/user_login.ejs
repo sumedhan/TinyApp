@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <title>
-    Lets see what this is.
+    Login
   </title>
 </head>
 <body>
@@ -13,24 +13,16 @@
       Login to access TinyApp
   </h4>
 
-  <% if (!username) {%>
+  
     
     <!-- Login Form-->
     <form id="login" method='POST' action='/login'>
-      <input type="text" name="username" placeholder="your username">
+      <input type="email" name="email" placeholder="you@email.com">
+      <input type="password" name="password" placeholder="password">
       <input type="submit" value="Log in">
     </form>
     
   
-    <% } else {%>
-    
-    <!-- Logout-->
-    <h5><%= username%> is logged in.</h5>
-    <form id="logout" method='POST' action='/logout'>
-      <input type="submit" value="Logout">
-    </form>
-    
-    <% } %>
   
   <% include ../partials/_footer%>
 </body>

@@ -1,46 +1,22 @@
 <!-- views/partials/_header.ejs -->
 <div class="page-header">
   <style>
-    ul {
+    h3 {
       background: #CDCDCD;
-      display: flex;
-      justify-content: space-between;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
+      padding: 2px;
+      margin: 2px;
     }
-    li {
-      font-size: 20px;
-    }
-    input[type=text] {
-      height: 100%;
-      border
+    a {
+      float: right;
+      padding: 2px;
     }
   </style>
 
-  <ul>
-    <li>TinyApp</li>
-
-
-    <% if (!username) {%>
-    <li>
-    <!-- Login Form-->
-    <form id="login" method='POST' action='/login'>
-      <input type="text" name="username" placeholder="your username">
-      <input type="submit" value="Log in">
-    </form>
-    </li>
+  <h3>TinyApp
   
-    <% } else {%>
-    <li>
-    <!-- Logout-->
-    <h5><%= username%> is logged in.</h5>
-    <form id="logout" method='POST' action='/logout'>
-      <input type="submit" value="Logout">
-    </form>
-    </li>
-    <% } %>
-
-</ul>
+    <a href="/login" id="header_links"> Login </a>
+    <a href="/register" id="header_links">  Register  </a>
+  </h3>
+  
 
 </div>

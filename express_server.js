@@ -50,6 +50,31 @@ function registeruserId(email, password) {
   return uniqueUserId;
 }
 
+// function to check if user is logged in
+function isUserLoggedIn(userIdCookie) {
+  if(userIdCookie) 
+    return true;
+  else 
+    return false;
+}
+
+// function to return userid given email address
+function findUserId(email) {
+  for(var userId in users) {
+    if( email === users[userId].email)
+      return userId;
+  }
+  return 0;
+}
+
+// function to match the entered email and password to the database entries
+function passwordMatch(email, password) {
+  const userId = findUserId(email);
+  if(password === users[userId].password)
+    return true;
+  else 
+    return false;
+}
 
 // Database that stores short and long url pairs
 var urlDatabase = {
@@ -86,16 +111,19 @@ const users = {
 
 // Root path 
 app.get('/', (request, response) => {
-  if(request.body.username){
+  if(isUserLoggedIn(request.cookies.user_id))
     response.redirect('/urls');
-  } else {
-  response.redirect('/login');
-  }
+  else 
+    response.redirect('/login');
 });
 
 //Login page
 app.get('/login', (request, response) => {
-  response.render('urls_login', {username: request.cookies.username})
+  console.log(request.cookie);
+  if(isUserLoggedIn(request.cookies.user_id))
+    response.redirect('/urls');
+  else
+    response.render('urls_login');
 });
 
 // Path that lists the url index. If lo
@@ -183,18 +211,30 @@ app.post("/urls/:id", (request, response) => {
 
 //Login the user
 app.post("/login", (request, response) => {
-  let username = request.body.username;
-  response.cookie("username",username);
-  response.redirect("/urls");
+  let email = request.body.email;
+  let password = request.body.password;
+  if(!email || !password) {
+    response.statusCode = 400;
+    response.send('Missing Credentials');
+  } else if(canUserBeRegistered(email)) {
+    response.statusCode = 403;
+    response.send("User does not exist");
+  } else if(! passwordMatch(email, password)) {
+    response.statusCode = 403;
+    response.send("Incorrect username/password");
+  } else {
+    response.cookie("user_id", email);
+    response.redirect("/urls");
+  }
 });
 
 //log out the user
 app.post("/logout", (request, response) => {
-  response.clearCookie("username");
+  response.clearCookie("user_id");
   response.redirect("/urls");
 });
 
-//Registration form data submission
+//Registration form data submission cehcks for missing credentials and exisiting emails
 app.post("/register", (request, response) => {
   let email = request.body.email;
   let password = request.body.password;
