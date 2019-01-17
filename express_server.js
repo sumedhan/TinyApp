@@ -1,3 +1,4 @@
+// Modules
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
@@ -5,12 +6,14 @@ const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 const moment = require('moment');
 
-
+//Middleware
 app.set('view engine', 'ejs') 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static('public'));
 
+
+//Function that generates a random string for the shortened URL. The url is 6 characters long.
 function generateRandomString() {
   let randomString = '';
   do {
@@ -21,13 +24,23 @@ function generateRandomString() {
 //Returns true if random string is valid (i.e. has not been used before)
 function checkUniqueShortUrl(randomString) {
   for(var shortURL in urlDatabase) {
-    if(shortURL === randomString) {
+    if(randomString === urlDatabase) {
       return false;
     }
   }
   return true;
 }
 
+// function to register a new user in the user database
+function registeruserId(email, password) {
+  const uniqueUserId = generateRandomString();
+  users[uniqueUserId] = {
+    id: uniqueUserId,
+    email,
+    password
+  };
+  return uniqueUserId;
+}
 
 
 // Database that stores short and long url pairs
@@ -45,6 +58,21 @@ var urlDatabase = {
     numberOfVisits: 0
   }
 }
+
+// User database
+const users = { 
+  "userRandomID": {
+    id: "userRandomID", 
+    email: "user@example.com", 
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID", 
+    email: "user2@example.com", 
+    password: "dishwasher-funk"
+  }
+}
+
 
 // Route definitions -
 
@@ -98,6 +126,10 @@ app.get('/urls.json', (request, response) => {
   response.json(urlDatabase);
 });
 
+// Returns a page that includes a form with an email and password
+app.get('/register', (request, response) => {
+  response.render('user_register');
+})
 
 //Post function to accept a new long URL , gneerate a random shortURL and then add to database
 app.post("/urls", (request, response) => {
@@ -153,6 +185,15 @@ app.post("/logout", (request, response) => {
   response.clearCookie("username");
   response.redirect("/urls");
 });
+
+//Registration form data submission
+app.post("/register", (request, response) => {
+  let username = request.body.email;
+  let password = request.body.password;
+  const userId = registeruserId(username, password);
+  response.cookie("user_id", userId);
+  response.redirect('/urls');
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
