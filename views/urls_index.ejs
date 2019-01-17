@@ -5,6 +5,7 @@
   </head>
   <body>
     <% include ../partials/_header %>
+    <% if (username) { %>
     <h4>URLs in TinyApps</h4>
     <table>
       <th>Short URL</th>
@@ -32,6 +33,8 @@
     <p>
     <a href="./urls/new">Tiny a new link</a>
     </p>
+    <% }%>
+   
     <% include ../partials/_footer%>
   </body>
 </html>
