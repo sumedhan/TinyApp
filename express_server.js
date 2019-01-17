@@ -18,18 +18,26 @@ function generateRandomString() {
   let randomString = '';
   do {
     randomString = Math.random().toString(36).substring(2,8);
-  } while(!checkUniqueShortUrl(randomString)); 
+  } while(!checkUniqueString(randomString)); 
   return randomString; 
 }
-//Returns true if random string is valid (i.e. has not been used before)
-function checkUniqueShortUrl(randomString) {
-  for(var shortURL in urlDatabase) {
-    if(randomString === urlDatabase) {
+//Returns true if random string is valid (i.e. has not been used before in URLS or User ids)
+function checkUniqueString(randomString) {
+  if( urlDatabase[randomString] || users[randomString]) 
+    return false;
+  else 
+    return true;
+}
+
+// Checks if email id is already in the database
+function canUserBeRegistered(email) {
+  for(var userId in users) {
+    if( email === users[userId].email)
       return false;
-    }
   }
   return true;
 }
+
 
 // function to register a new user in the user database
 function registeruserId(email, password) {
@@ -188,11 +196,19 @@ app.post("/logout", (request, response) => {
 
 //Registration form data submission
 app.post("/register", (request, response) => {
-  let username = request.body.email;
+  let email = request.body.email;
   let password = request.body.password;
-  const userId = registeruserId(username, password);
-  response.cookie("user_id", userId);
-  response.redirect('/urls');
+  if(!email || !password) {
+    response.statusCode = 400;
+    response.send('Missing Credentials');
+  } else if(!canUserBeRegistered(email)) {
+    response.statusCode = 400;
+    response.send('User already exists');
+  } else {
+    const userId = registeruserId(email, password);
+    response.cookie("user_id", userId);
+    response.redirect('/urls');
+  }
 })
 
 app.listen(PORT, () => {
