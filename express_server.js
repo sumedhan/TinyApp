@@ -33,11 +33,21 @@ var urlDatabase = {
   '9sm5xK': 'http://www.google.com'
 };
 
+// Route definitions -
+
 // Root path 
 app.get('/', (request, response) => {
-  response.send('Hello!');
+  if(request.body.username){
+    response.redirect('/urls');
+  } else {
+  response.redirect('/login');
+  }
 });
 
+//Login page
+app.get('/login', (request, response) => {
+  response.render('urls_login')
+});
 // Path that lists the url index
 app.get('/urls', (request, response) => {
   response.render('urls_index', {

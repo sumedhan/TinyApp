@@ -6,3 +6,6 @@ A URL shortening app.
 Node
 Express
 Ejs
+
+##Author
+Sumedha 
