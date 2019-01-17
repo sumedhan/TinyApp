@@ -12,11 +12,13 @@
   <h4>
       Short URL: <%= shortURL %> 
   </h4>
-
+  
   <form method="POST" action="/urls/<%= shortURL%>">
     <input type="text" value="<%= longURL%>" name="updatedLongURL">
     <input type="submit" value="Update"> 
   </form>
+
+ 
   <% include ../partials/_footer%>
 </body>
 </html>

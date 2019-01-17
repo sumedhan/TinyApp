@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const moment = require('moment');
 
 
 app.set('view engine', 'ejs') 
@@ -27,11 +28,23 @@ function checkUniqueShortUrl(randomString) {
   return true;
 }
 
+
+
 // Database that stores short and long url pairs
 var urlDatabase = {
-  'b2xVn2': 'http://www.lighthouselabs.ca',
-  '9sm5xK': 'http://www.google.com'
-};
+  'b2xVn2': 
+  {
+    longURL: 'http://www.lighthouselabs.ca',
+    dateCreated: "Jan 17th 2019",
+    numberOfVisits: 0
+  },
+  '9sm5xK':
+  {
+    longURL: 'http://www.google.com',
+    dateCreated: "Jan 17th 2018",
+    numberOfVisits: 0
+  }
+}
 
 // Route definitions -
 
@@ -46,8 +59,9 @@ app.get('/', (request, response) => {
 
 //Login page
 app.get('/login', (request, response) => {
-  response.render('urls_login')
+  response.render('urls_login', {username: request.cookies.username})
 });
+
 // Path that lists the url index
 app.get('/urls', (request, response) => {
   response.render('urls_index', {
@@ -63,9 +77,10 @@ app.get('/urls/new', (request, response) => {
 
 //shows the short and long URL for a specific short URL
 app.get('/urls/:id', (request, response) => {
+  const shortURL = request.params.id;
   response.render('urls_show', {
-    shortURL: request.params.id,
-    longURL: urlDatabase[request.params.id],
+    shortURL: shortURL,
+    longURL: urlDatabase[shortURL].longURL,
     username: request.cookies.username
   });
 });
@@ -76,13 +91,16 @@ app.get('/urls.json', (request, response) => {
 });
 
 
-
-
 //Post function to accept a new long URL , gneerate a random shortURL and then add to database
 app.post("/urls", (request, response) => {
   //request.body uses the package body parser to encode it in the key value pairs defined in the form tag
-  let shortURL = generateRandomString();
-  urlDatabase[shortURL] = request.body.longURL;
+  const shortURL = generateRandomString();
+  urlDatabase[shortURL] = 
+  { longURL: request.body.longURL,
+    dateCreated: moment().format("Do MMM YYYY"),
+    numberOfVisits: 0
+  };
+  
   response.redirect(`/urls/${shortURL}`);         
 });
 
@@ -91,7 +109,8 @@ app.get("/u/:shortURL", (request, response) => {
   let shortURL = request.params.shortURL;
   //checks if the short url exists in our database
   if(urlDatabase[shortURL]) {
-  let longURL = urlDatabase[shortUrl];
+  let longURL = urlDatabase[shortURL].longURL;
+  urlDatabase[shortURL].numberOfVisits++;
   response.redirect(longURL);
   } else {
     let status = 400;
@@ -110,7 +129,7 @@ app.post("/urls/:id/delete", (request, response) => {
 app.post("/urls/:id", (request, response) => {
   let shortUrl = request.params.id;
   let longUrl = request.body.updatedLongURL;
-  urlDatabase[shortUrl] = longUrl;
+  urlDatabase[shortUrl].longURL = longUrl;
   response.redirect("/urls");
 });
 

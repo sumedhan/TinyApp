@@ -9,12 +9,15 @@
     <table>
       <th>Short URL</th>
       <th>Long URL</th>
-      <th></th>
+      <th>Date Created</th>
+      <th>Number of Visits</th>
       <th></th>
     <% for(var item in urls) {%>
     <tr>
       <td><%= item%></td>
-      <td><%= urls[item]%></td>
+      <td><%= urls[item].longURL%></td>
+      <td><%= urls[item].dateCreated%></td>
+      <td><%= urls[item].numberOfVisits%></td>
       <td>
         <a href="./urls/<%= item%>">Edit</a>
       </td>
@@ -23,6 +26,7 @@
             <input type="submit" value="Delete"> 
           </form>
       </td>
+      
     <% } %>
     </table>
     <p>

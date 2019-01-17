@@ -1,36 +1,46 @@
 <!-- views/partials/_header.ejs -->
-<link href="style.css" rel="stylesheet" type="text/css">
 <div class="page-header">
   <style>
-    h1 {
+    ul {
       background: #CDCDCD;
+      display: flex;
+      justify-content: space-between;
+      list-style-type: none;
       margin: 0;
-      padding: 5px;
-      color: red;
+      padding: 0;
     }
-    h6 {
-      margin: 0;
-      padding: 5px;
+    li {
+      font-size: 20px;
+    }
+    input[type=text] {
+      height: 100%;
+      border
     }
   </style>
+
+  <ul>
+    <li>TinyApp</li>
+
+
+    <% if (!username) {%>
+    <li>
+    <!-- Login Form-->
+    <form id="login" method='POST' action='/login'>
+      <input type="text" name="username" placeholder="your username">
+      <input type="submit" value="Log in">
+    </form>
+    </li>
   
-  <h1>TinyApp</h1>
+    <% } else {%>
+    <li>
+    <!-- Logout-->
+    <h5><%= username%> is logged in.</h5>
+    <form id="logout" method='POST' action='/logout'>
+      <input type="submit" value="Logout">
+    </form>
+    </li>
+    <% } %>
 
-  <% if (!username) {%>
-  <!-- Login Form-->
-  <form id="login" method='POST' action='/login'>
-    <input type="text" name="username" placeholder="your username">
-    <input type="submit" value="Log in">
-  </form>
-  <% } else {%>
+</ul>
 
-  <!-- Logout-->
-  <h5><%= username%> is logged in.</h5>
-  <form id="logout" method='POST' action='/logout'>
-    <input type="submit" value="Logout">
-  </form>
-  
-  <% } %>
-
-  <h6>Tinifying URLS.</h6>
 </div>
