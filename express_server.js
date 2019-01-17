@@ -62,7 +62,7 @@ app.get('/login', (request, response) => {
   response.render('urls_login', {username: request.cookies.username})
 });
 
-// Path that lists the url index
+// Path that lists the url index. If lo
 app.get('/urls', (request, response) => {
   if(request.cookies.username) {
     response.render('urls_index', {
