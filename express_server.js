@@ -123,15 +123,15 @@ app.get('/login', (request, response) => {
   if(isUserLoggedIn(request.cookies.user_id))
     response.redirect('/urls');
   else
-    response.render('urls_login');
+    response.render('user_login');
 });
 
-// Path that lists the url index. If lo
+// Path that lists the url index. If logged out, redirects to login page
 app.get('/urls', (request, response) => {
-  if(request.cookies.username) {
+  if(isUserLoggedIn(request.cookies.user_id)) {
     response.render('urls_index', {
       urls: urlDatabase,
-      username: request.cookies.username
+      user: users[request.cookies.user_id]
     });
   } else {
     response.redirect('/login');
@@ -140,8 +140,8 @@ app.get('/urls', (request, response) => {
 
 //Path to generate a new tiny URL
 app.get('/urls/new', (request, response) => {
-  if(request.cookies.username) {
-    response.render('urls_new', {username: request.cookies.username});
+  if(isUserLoggedIn(request.cookies.user_id)) {
+    response.render('urls_new', {user: users[request.cookies.user_id]});
   } else {
     response.redirect('/login');
   }
@@ -153,7 +153,7 @@ app.get('/urls/:id', (request, response) => {
   response.render('urls_show', {
     shortURL: shortURL,
     longURL: urlDatabase[shortURL].longURL,
-    username: request.cookies.username
+    user: users[request.cookies.user_id]
   });
 });
 
