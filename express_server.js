@@ -119,7 +119,6 @@ app.get('/', (request, response) => {
 
 //Login page
 app.get('/login', (request, response) => {
-  console.log(request.cookie);
   if(isUserLoggedIn(request.cookies.user_id))
     response.redirect('/urls');
   else
@@ -129,6 +128,7 @@ app.get('/login', (request, response) => {
 // Path that lists the url index. If logged out, redirects to login page
 app.get('/urls', (request, response) => {
   if(isUserLoggedIn(request.cookies.user_id)) {
+    console.log(users[request.cookies.user_id]);
     response.render('urls_index', {
       urls: urlDatabase,
       user: users[request.cookies.user_id]
@@ -223,7 +223,7 @@ app.post("/login", (request, response) => {
     response.statusCode = 403;
     response.send("Incorrect username/password");
   } else {
-    response.cookie("user_id", email);
+    response.cookie("user_id", findUserId(email));
     response.redirect("/urls");
   }
 });

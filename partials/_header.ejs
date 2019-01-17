@@ -6,17 +6,24 @@
       padding: 2px;
       margin: 2px;
     }
-    a {
+    form {
       float: right;
       padding: 2px;
+      margin: 2px;
+      font-size: 16px;
     }
   </style>
 
-  <h3>TinyApp
-  
-    <a href="/login" id="header_links"> Login </a>
-    <a href="/register" id="header_links">  Register  </a>
+<!--If user is logged in-->
+  <%= if(user) { %>
+  <h3> <%= user.email %>
   </h3>
-  
+  <form id="logout" method="POST" action="/logout">
+  <input type="submit" value="Logout">
+</form>
 
+  <%= } else { %>
+    <a href="/login"> Login</a>
+    <a href="/register"> Register</a>
+  <%= } %>
 </div>
