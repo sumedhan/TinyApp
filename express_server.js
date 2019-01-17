@@ -64,15 +64,23 @@ app.get('/login', (request, response) => {
 
 // Path that lists the url index
 app.get('/urls', (request, response) => {
-  response.render('urls_index', {
-    urls: urlDatabase,
-    username: request.cookies.username
-  });
+  if(request.cookies.username) {
+    response.render('urls_index', {
+      urls: urlDatabase,
+      username: request.cookies.username
+    });
+  } else {
+    response.redirect('/login');
+  }
 });
 
 //Path to generate a new tiny URL
 app.get('/urls/new', (request, response) => {
-  response.render('urls_new', {username: request.cookies.username});
+  if(request.cookies.username) {
+    response.render('urls_new', {username: request.cookies.username});
+  } else {
+    response.redirect('/login');
+  }
 });
 
 //shows the short and long URL for a specific short URL
