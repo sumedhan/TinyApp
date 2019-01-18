@@ -9,8 +9,13 @@ const cookieSession = require('cookie-session');
 
 const app = express();
 const PORT = 8080; // default port 8080
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 36963b1854901ca669ae8ec7fac84d4db005d559
 //  Middleware
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
