@@ -147,6 +147,17 @@ function urlBelongsToUser(shortURL, userID) {
   }
   return false;
 }
+
+//  Returns filtered URL database that gives only the URLs for a certain user
+function urlDatabaseFilter(userid) {
+  let filtered = {};
+  for (let url in urlDatabase) {
+    if (urlDatabase[url].userID === userid) {
+      filtered[url] = urlDatabase[url];
+    }
+  }
+  return filtered;
+}
 // Route definitions -
 
 // Root path
@@ -161,8 +172,9 @@ app.get('/', (request, response) => {
 // Path that lists the url index. If logged out, redirects to login page
 app.get('/urls', (request, response) => {
   if (isUserLoggedIn(request.session.user_id)) {
+    const filtered = urlDatabaseFilter(request.session.user_id);
     response.render('urls_index', {
-      urls: urlDatabase,
+      urls: filtered,
       user: users[request.session.user_id],
     });
   } else {

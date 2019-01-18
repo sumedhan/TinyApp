@@ -28,7 +28,6 @@
       <th></th>
       
     <% for(var item in urls) { %>
-    <% if(urls[item].userID === user.id) { %>
       
       <tr>
         <td><a href="/u/<%= item%>">/u/<%= item%></a></td>
@@ -46,7 +45,6 @@
       </tr>
       
     <%  } %>
-    <%  }%>
     </table>
     <p>
       <a href="./urls/new">Tiny a new link</a>
