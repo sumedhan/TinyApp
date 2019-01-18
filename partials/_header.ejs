@@ -15,15 +15,15 @@
   </style>
 
 <!--If user is logged in-->
-  <%= if(user) { %>
+  <% if(user) { %>
   <h3> <%= user.email %>
   </h3>
   <form id="logout" method="POST" action="/logout">
   <input type="submit" value="Logout">
 </form>
 
-  <%= } else { %>
+  <% } else { %>
     <a href="/login"> Login</a>
     <a href="/register"> Register</a>
-  <%= } %>
+  <% } %>
 </div>

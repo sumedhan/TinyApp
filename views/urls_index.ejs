@@ -15,7 +15,8 @@
       <th>Date Created</th>
       <th>Number of Visits</th>
       <th></th>
-    <% for(var item in urls) {%>
+    <% for(var item in urls) {
+        if(urls[item].userID === user.id) { %>
     <tr>
       <td><%= item%></td>
       <td><%= urls[item].longURL%></td>
@@ -33,7 +34,8 @@
     <p>
     
     </p>
-    <% }%>
+    <% }
+      }%>
     <a href="./urls/new">Tiny a new link</a>
     <% include ../partials/_footer%>
   </body>

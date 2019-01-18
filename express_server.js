@@ -76,17 +76,40 @@ function passwordMatch(email, password) {
     return false;
 }
 
+//function creates a short URL in the database
+function createURL(longURL, userID) {
+  let shortURL = generateRandomString();
+  urlDatabase[shortURL] = 
+  { longURL: longURL,
+    userID: userID,
+    dateCreated: moment().format("Do MMM YYYY"),
+    numberOfVisits: 0
+  };
+  return shortURL;
+}
+
+// Checks if url belongs to the user
+function urlBelongsToUser(shortURL, userID) {
+  if(urlDatabase[shortURL].userID === userID)
+    return true;
+  else
+    return false;
+}
+
+
 // Database that stores short and long url pairs
 var urlDatabase = {
   'b2xVn2': 
   {
     longURL: 'http://www.lighthouselabs.ca',
+    userID: "userRandomID",
     dateCreated: "Jan 17th 2019",
     numberOfVisits: 0
   },
   '9sm5xK':
   {
     longURL: 'http://www.google.com',
+    userID: "user2RandomID",
     dateCreated: "Jan 17th 2018",
     numberOfVisits: 0
   }
@@ -165,19 +188,6 @@ app.get('/urls.json', (request, response) => {
 // Returns a page that includes a form with an email and password
 app.get('/register', (request, response) => {
   response.render('user_register');
-})
-
-//Post function to accept a new long URL , gneerate a random shortURL and then add to database
-app.post("/urls", (request, response) => {
-  //request.body uses the package body parser to encode it in the key value pairs defined in the form tag
-  const shortURL = generateRandomString();
-  urlDatabase[shortURL] = 
-  { longURL: request.body.longURL,
-    dateCreated: moment().format("Do MMM YYYY"),
-    numberOfVisits: 0
-  };
-  
-  response.redirect(`/urls/${shortURL}`);         
 });
 
 // Redirect short URLs to the correct long URL
@@ -194,19 +204,45 @@ app.get("/u/:shortURL", (request, response) => {
   }
 });
 
+
+//Post function to accept a new long URL , gneerate a random shortURL and then add to database
+app.post("/urls", (request, response) => {
+  if(isUserLoggedIn(request.cookie.user_id)) {
+    let longURL = request.body.longURL;
+    let userID = request.cookie.user_id;
+    let shortURL = createURL(longURL, userID);
+    response.redirect(`/urls/${shortURL}`);  
+  } else {
+    response.statusCode = 400;
+    response.send("Please log in");
+  }       
+});
+
 //Deletes URLS from database
 app.post("/urls/:id/delete", (request, response) => {
-  let shortUrl = request.params.id;
-  delete urlDatabase[shortUrl];
-  response.redirect("/urls");
+  let shortURL = request.params.id;
+  let userID = request.cookies.user_id;
+  if(urlBelongsToUser(shortURL, userID)) {
+    delete urlDatabase[shortURL];
+    response.redirect("/urls");
+  } else {
+    response.statusCode = 400;
+    response.send("Can't delete others' links");
+  }
 });
 
 //Updates URLs in database
 app.post("/urls/:id", (request, response) => {
-  let shortUrl = request.params.id;
-  let longUrl = request.body.updatedLongURL;
-  urlDatabase[shortUrl].longURL = longUrl;
-  response.redirect("/urls");
+  let shortURL = request.params.id;
+  let userID = request.cookies.user_id;
+  if(urlBelongsToUser(shortURL, userID)) {
+    urlDatabase[shortURL].longURL = request.body.updatedLongURL;
+    response.redirect("/urls");
+  } else {
+    response.statusCode = 400;
+    response.send("Can't edit others' links");
+  }
+
 });
 
 //Login the user
@@ -254,4 +290,3 @@ app.post("/register", (request, response) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-;
