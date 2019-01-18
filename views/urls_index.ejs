@@ -31,7 +31,7 @@
     <% if(urls[item].userID === user.id) { %>
       
       <tr>
-        <td><%= item%></td>
+        <td><a href="/u/<%= item%>">/u/<%= item%></a></td>
         <td><%= urls[item].longURL%></td>
         <td><%= urls[item].dateCreated%></td>
         <td><%= urls[item].numberOfVisits%></td>
