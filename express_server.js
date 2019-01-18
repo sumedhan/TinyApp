@@ -9,13 +9,7 @@ const cookieSession = require('cookie-session');
 
 const app = express();
 const PORT = 8080; // default port 8080
-<<<<<<< HEAD
 
-
-=======
-
-
->>>>>>> 36963b1854901ca669ae8ec7fac84d4db005d559
 //  Middleware
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -221,7 +215,11 @@ app.get('/urls.json', (request, response) => {
 
 // Returns a page that includes a form with an email and password
 app.get('/register', (request, response) => {
-  response.render('user_register');
+  if (isUserLoggedIn(request.session.user_id)) {
+    response.redirect('/urls');
+  } else {
+    response.render('user_register');
+  }
 });
 
 // Redirect short URLs to the correct long URL
