@@ -192,11 +192,21 @@ app.get('/urls/new', (request, response) => {
 // shows the short and long URL for a specific short URL
 app.get('/urls/:id', (request, response) => {
   const shortURL = request.params.id;
-  response.render('urls_show', {
-    shortURL,
-    longURL: urlDatabase[shortURL].longURL,
-    user: users[request.session.user_id],
-  });
+  if (isUserLoggedIn(request.session.user_id)) {
+    if (urlBelongsToUser(shortURL, request.session.user_id))  {
+      response.render('urls_show', {
+        shortURL,
+        url: urlDatabase[shortURL],
+        user: users[request.session.user_id],
+      });
+    } else {
+      response.statusCode = 400;
+      response.send("You can view only the URLs created by you!");
+    }
+  } else {
+    response.statusCode = 400;
+    response.send("Please log in to view!");
+  }
 });
 
 // Path that returns current JSON of URLS
@@ -218,8 +228,8 @@ app.get('/u/:shortURL', (request, response) => {
     urlDatabase[shortURL].numberOfVisits += 1;
     response.redirect(longURL);
   } else {
-    const status = 400;
-    response.sendStatus(status);
+    response.statusCode = 400;
+    response.send("Does not exist! Please check the Tiny URL.");
   }
 });
 
