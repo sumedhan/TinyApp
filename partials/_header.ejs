@@ -1,29 +1,20 @@
 <!-- views/partials/_header.ejs -->
-<div class="page-header">
-  <style>
-    h3 {
-      background: #CDCDCD;
-      padding: 2px;
-      margin: 2px;
-    }
-    form {
-      float: right;
-      padding: 2px;
-      margin: 2px;
-      font-size: 16px;
-    }
-  </style>
-
+<style>
+#logout {
+  float: right;
+}
+</style>
 <!--If user is logged in-->
   <% if(user) { %>
-  <h3> <%= user.email %>
-  </h3>
+    <header>
+  <h3> <%= user.email %></h3>
+</header>
   <form id="logout" method="POST" action="/logout">
-  <input type="submit" value="Logout">
+  <input class="secondary small" type="submit" value="Logout">
 </form>
 
   <% } else { %>
     <a href="/login"> Login</a>
     <a href="/register"> Register</a>
   <% } %>
-</div>
+

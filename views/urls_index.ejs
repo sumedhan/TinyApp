@@ -1,18 +1,16 @@
 <!DOCTYPE html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="https://gitcdn.link/repo/Chalarangelo/mini.css/master/dist/mini-default.min.css" />
     <title>URL Index</title>
     <style>
-    table, th, td {
-      border-bottom: 1px solid grey;
-      text-align: left;
-    }
-    table {
-      border-collapse: collapse;
-      width: 80%;
+    form {
+      --form-back-color: white;
     }
     </style>
+     
   </head>
+
   <body>
     <% include ../partials/_header %>
   
@@ -20,37 +18,42 @@
     </h4>
 
     <table>
+      <caption>Your Links</caption>
+      <thead>
+        <tr>
       <th>Short URL</th>
       <th>Long URL</th>
       <th>Date Created</th>
       <th>Number of Visits</th>
-      <th></th>
-      <th></th>
-      
+      <th>Edit</th>
+      <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody>
     <% for(var item in urls) { %>
     <% if(urls[item].userID === user.id) { %>
       
       <tr>
-        <td><a href="/u/<%= item%>">/u/<%= item%></a></td>
-        <td><%= urls[item].longURL%></td>
-        <td><%= urls[item].dateCreated%></td>
-        <td><%= urls[item].numberOfVisits%></td>
-        <td>
+        <td data-label="Short URL"><a href="/u/<%= item%>">/u/<%= item%></a></td>
+        <td data-label="Long URL"><%= urls[item].longURL%></td>
+        <td data-label="Date Created"><%= urls[item].dateCreated%></td>
+        <td data-label="Number of Visits"><%= urls[item].numberOfVisits%></td>
+        <td data-label="Edit">
           <a href="./urls/<%= item%>">Edit</a>
         </td> 
-        <td>
+        <td data-label="Delete">
             <form method="POST" action="/urls/<%= item%>/delete">
-              <input type="submit" value="Delete"> 
+              <input class="small secondary" type="submit" value="Delete"> 
             </form>
         </td>
       </tr>
       
     <%  } %>
     <%  }%>
+    </tbody>
     </table>
     <p>
       <a href="./urls/new">Tiny a new link</a>
     </p>
-    <% include ../partials/_footer%>
   </body>
 </html>
