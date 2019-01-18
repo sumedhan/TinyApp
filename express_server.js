@@ -5,6 +5,8 @@ const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 const moment = require('moment');
+const bcrypt = require('bcrypt');
+
 
 //Middleware
 app.set('view engine', 'ejs') 
@@ -96,7 +98,15 @@ function urlBelongsToUser(shortURL, userID) {
     return false;
 }
 
+// Function to hash password using bcrypt
+function hashPassword(password) {
+  return bcrypt.hashSync(password, 10);
+}
 
+// Function to check if password is correct
+function checkPassword(password, userID) {
+  return bcrypt.compareSync(password, users[userID].password);
+}
 // Database that stores short and long url pairs
 var urlDatabase = {
   'b2xVn2': 
