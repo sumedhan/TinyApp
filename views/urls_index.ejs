@@ -2,6 +2,16 @@
   <head>
     <meta charset="utf-8">
     <title>URL Index</title>
+    <style>
+    table, th, td {
+      border-bottom: 1px solid grey;
+      text-align: left;
+    }
+    table {
+      border-collapse: collapse;
+      width: 80%;
+    }
+    </style>
   </head>
   <body>
     <% include ../partials/_header %>
@@ -15,28 +25,32 @@
       <th>Date Created</th>
       <th>Number of Visits</th>
       <th></th>
-    <% for(var item in urls) {
-        if(urls[item].userID === user.id) { %>
-    <tr>
-      <td><%= item%></td>
-      <td><%= urls[item].longURL%></td>
-      <td><%= urls[item].dateCreated%></td>
-      <td><%= urls[item].numberOfVisits%></td>
-      <td>
-        <a href="./urls/<%= item%>">Edit</a>
-      </td>
-      <td>
-          <form method="POST" action="/urls/<%= item%>/delete">
-            <input type="submit" value="Delete"> 
-          </form>
-      </td>
+      <th></th>
+      
+    <% for(var item in urls) { %>
+    <% if(urls[item].userID === user.id) { %>
+      
+      <tr>
+        <td><%= item%></td>
+        <td><%= urls[item].longURL%></td>
+        <td><%= urls[item].dateCreated%></td>
+        <td><%= urls[item].numberOfVisits%></td>
+        <td>
+          <a href="./urls/<%= item%>">Edit</a>
+        </td> 
+        <td>
+            <form method="POST" action="/urls/<%= item%>/delete">
+              <input type="submit" value="Delete"> 
+            </form>
+        </td>
+      </tr>
+      
+    <%  } %>
+    <%  }%>
     </table>
     <p>
-    
+      <a href="./urls/new">Tiny a new link</a>
     </p>
-    <% }
-      }%>
-    <a href="./urls/new">Tiny a new link</a>
     <% include ../partials/_footer%>
   </body>
 </html>
