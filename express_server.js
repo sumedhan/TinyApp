@@ -206,7 +206,7 @@ app.get('/urls/new', (request, response) => {
 app.get('/urls/:id', (request, response) => {
   const shortURL = request.params.id;
   if (isUserLoggedIn(request.session.user_id)) {
-    if (urlBelongsToUser(shortURL, request.session.user_id))  {
+    if (urlBelongsToUser(shortURL, request.session.user_id)) {
       response.render('urls_show', {
         shortURL,
         url: urlDatabase[shortURL],
@@ -214,7 +214,7 @@ app.get('/urls/:id', (request, response) => {
       });
     } else {
       response.statusCode = 400;
-      response.send("You can view only the URLs created by you!");
+      response.send('You can view only the URLs created by you!');
     }
   } else {
     response.statusCode = 400;

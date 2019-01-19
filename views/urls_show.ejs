@@ -19,8 +19,8 @@
   
   
   <form method="POST" action="/urls/<%= shortURL%>?_method=PUT">
-    <input type="text" value="<%= url.longURL%>" name="updatedLongURL" width="500">
-    <input type="submit" value="Update"> 
+    <input type="text" value="<%= url.longURL%>" name="updatedLongURL" class="form-control form-group">
+    <input type="submit" value="Update" class="form-control btn btn-primary"> 
   </form>
 
   <% include ../partials/_footer%>

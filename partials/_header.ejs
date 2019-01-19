@@ -1,28 +1,28 @@
 <!-- views/partials/_header.ejs -->
 <style>
 .right {
-float: right;
-padding: 2px;
+  float: right;
+  padding: 2px;
+}
+.header-partial {
+  padding: 10px;
+  background-color: lightgrey;
 }
 </style>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha384-PmY9l28YgO4JwMKbTvgaS7XNZJ30MK9FAZjjzXtlqyZCqBY6X6bXIkM++IkyinN+" crossorigin="anonymous">
 <div class="header-partial">
+  <h2>TinyApp</h2>
 <!--If user is logged in-->
   <% if(user) { %>
     <form id="logout" method="POST" action="/logout?_method=DELETE">
-      <legend>TinyApp</legend>
-    <div class="input-group">
-   <label><%= user.email %></label>
-  <input class="secondary small" type="submit" value="Logout">
-   </div>
-</form>
-
+      <label><%= user.email %></label>
+      <input type="submit" value="Logout">
+    </form>
 
   <% } else { %>
     <header>Welcome to TinyApp
-    <a class="right" href="/login"> Login </a>
-    <a class="right" href="/register">  Register  </a>
-  <% } %>
+      <a class="right" href="/login"> Login </a>
+      <a class="right" href="/register">  Register  </a>
+      <% } %>
     </header>
 </div>

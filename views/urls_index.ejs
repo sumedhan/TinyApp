@@ -2,24 +2,14 @@
   <head>
     <meta charset="utf-8">
     <title>URL Index</title>
-    <style>
-    table, th, td {
-      border-bottom: 1px solid grey;
-      text-align: left;
-    }
-    table {
-      border-collapse: collapse;
-      width: 80%;
-    }
-    </style>
   </head>
   <body>
     <% include ../partials/_header %>
   
-    <h4>URLs in TinyApps
-    </h4>
+    <h4>URLs in TinyApps </h4>
 
-    <table>
+    <table class="table">
+      
       <th>Short URL</th>
       <th>Long URL</th>
       <th>Date Created</th>
@@ -27,8 +17,7 @@
       <th></th>
       <th>Delete</th>
       
-    <% for(var item in urls) { %>
-      
+      <% for(var item in urls) { %>
       <tr>
         <td><a href="/u/<%= item%>">/u/<%= item%></a></td>
         <td><%= urls[item].longURL%></td>
@@ -39,14 +28,14 @@
         </td> 
         <td>
             <form method="POST" action="/urls/<%= item%>/delete?_method=DELETE">
-              <input class="button-group" type="submit" value="🗑️"> 
+              <input type="submit" value="🗑️"> 
             </form>
         </td>
       </tr>
       
     <%  } %>
     </table>
-    <p>
+    <p><br><br>
       <a href="./urls/new">Tiny a new link</a>
     </p>
     <% include ../partials/_footer%>
