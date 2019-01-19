@@ -3,13 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <title>Register on TinyApp</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
 </head>
 <body>
   <!--Register Form-->
+  
+
   <form id="login" method='POST' action='/register?_method=PUT'>
+    <legend>Signup to Tiny your URLS</legend>
     <input type="email" name="email" placeholder="you@email.com">
     <input type="password" name="password" placeholder="Password">
     <input type="submit" value="Sign up">
   </form>
+  <% include ../partials/_footer%>
 </body>
 </html>

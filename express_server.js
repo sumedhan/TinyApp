@@ -189,7 +189,7 @@ app.get('/login', (request, response) => {
   if (isUserLoggedIn(request.session.user_id)) {
     response.redirect('/urls');
   } else {
-    response.render('user_login');
+    response.render('user_login', { user: users[request.session.user_id] });
   }
 });
 
@@ -232,7 +232,7 @@ app.get('/register', (request, response) => {
   if (isUserLoggedIn(request.session.user_id)) {
     response.redirect('/urls');
   } else {
-    response.render('user_register');
+    response.render('user_register', { user: users[request.session.user_id] });
   }
 });
 
@@ -251,7 +251,7 @@ app.get('/u/:shortURL', (request, response) => {
 });
 
 
-// Post function to accept a new long URL , gneerate a random shortURL and then add to database
+// Dunction to accept a new long URL , gneerate a random shortURL and then add to database
 app.put('/urls', (request, response) => {
   if (isUserLoggedIn(request.session.user_id)) {
     const longURL = request.body.longURL;

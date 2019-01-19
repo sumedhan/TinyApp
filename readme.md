@@ -11,7 +11,6 @@ The /urls page lists all the short URLs created and allows the user to edit, del
 ## Screenshots
 
 
-
 ## Dependencies
 - Node
 - Express

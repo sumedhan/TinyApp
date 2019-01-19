@@ -3,21 +3,26 @@
 <head>
   <meta charset="utf-8" />
   <title>
-    Lets see what this is.
+    Edit your TinyUrl
   </title>
 </head>
 <body>
   <% include ../partials/_header %>
 
-  <h4>
+  <h3>
       Short URL: <%= shortURL %> 
-  </h4>
+  </h3>
+  <p>
+      Date created: <%= url.dateCreated %> <br>
+      Number of visits: <%= url.numberOfVisits %>
+  </p>
+  
   
   <form method="POST" action="/urls/<%= shortURL%>?_method=PUT">
-    <input type="text" value="<%= url.longURL%>" name="updatedLongURL">
+    <input type="text" value="<%= url.longURL%>" name="updatedLongURL" width="500">
     <input type="submit" value="Update"> 
   </form>
 
-
+  <% include ../partials/_footer%>
 </body>
 </html>

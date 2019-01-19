@@ -1,29 +1,28 @@
 <!-- views/partials/_header.ejs -->
-<div class="page-header">
-  <style>
-    h3 {
-      background: #CDCDCD;
-      padding: 2px;
-      margin: 2px;
-    }
-    form {
-      float: right;
-      padding: 2px;
-      margin: 2px;
-      font-size: 16px;
-    }
-  </style>
+<style>
+.right {
+float: right;
+padding: 2px;
+}
+</style>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+<div class="header-partial">
 <!--If user is logged in-->
   <% if(user) { %>
-  <h3> <%= user.email %>
-  </h3>
-  <form id="logout" method="POST" action="/logout?_method=DELETE">
-  <input type="submit" value="Logout">
+    <form id="logout" method="POST" action="/logout?_method=DELETE">
+      <legend>TinyApp</legend>
+    <div class="input-group">
+   <label><%= user.email %></label>
+  <input class="secondary small" type="submit" value="Logout">
+   </div>
 </form>
 
+
   <% } else { %>
-    <a href="/login"> Login</a>
-    <a href="/register"> Register</a>
+    <header>Welcome to TinyApp
+    <a class="right" href="/login"> Login </a>
+    <a class="right" href="/register">  Register  </a>
   <% } %>
+    </header>
 </div>

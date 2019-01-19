@@ -3,22 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <title>Tinify a new URL</title>
-  <style>
-    label, input {
-      margin: 5px;
-    }
-    form {
-      float: left;
-    }
-  </style>
 </head>
 <body>
   <% include ../partials/_header%>
+
   <form action="/urls?_method=PUT" method="POST" style="margin:30px;">
+    <legend>Copy a link you want to Tiny in the box below:</legend>
     <label for="longURL">Enter a URL:</label>
     <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
     <input type="submit" value="Submit">
   </form>
   
+  <% include ../partials/_footer%>
 </body>
 </html>
