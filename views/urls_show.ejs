@@ -13,7 +13,7 @@
       Short URL: <%= shortURL %> 
   </h4>
   
-  <form method="POST" action="/urls/<%= shortURL%>">
+  <form method="POST" action="/urls/<%= shortURL%>?_method=PUT">
     <input type="text" value="<%= url.longURL%>" name="updatedLongURL">
     <input type="submit" value="Update"> 
   </form>

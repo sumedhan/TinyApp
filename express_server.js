@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const moment = require('moment');
 const bcrypt = require('bcrypt');
 const cookieSession = require('cookie-session');
+const methodOverride = require('method-override');
 
 const app = express();
 const PORT = 8080; // default port 8080
@@ -14,6 +15,7 @@ const PORT = 8080; // default port 8080
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(methodOverride('_method'));
 app.use(cookieSession({
   name: 'session',
   keys: ['dobo986', 'jene787'],
@@ -250,7 +252,7 @@ app.get('/u/:shortURL', (request, response) => {
 
 
 // Post function to accept a new long URL , gneerate a random shortURL and then add to database
-app.post('/urls', (request, response) => {
+app.put('/urls', (request, response) => {
   if (isUserLoggedIn(request.session.user_id)) {
     const longURL = request.body.longURL;
     const userID = request.session.user_id;
@@ -263,7 +265,7 @@ app.post('/urls', (request, response) => {
 });
 
 // Deletes URLS from database
-app.post('/urls/:id/delete', (request, response) => {
+app.delete('/urls/:id/delete', (request, response) => {
   const shortURL = request.params.id;
   const userID = request.session.user_id;
   if (urlBelongsToUser(shortURL, userID)) {
@@ -276,7 +278,7 @@ app.post('/urls/:id/delete', (request, response) => {
 });
 
 // Updates URLs in database
-app.post('/urls/:id', (request, response) => {
+app.put('/urls/:id', (request, response) => {
   const shortURL = request.params.id;
   const userID = request.session.user_id;
   if (urlBelongsToUser(shortURL, userID)) {
@@ -289,7 +291,7 @@ app.post('/urls/:id', (request, response) => {
 });
 
 // Login the user
-app.post('/login', (request, response) => {
+app.put('/login', (request, response) => {
   const email = request.body.email;
   const password = request.body.password;
   if (!email || !password) {
@@ -308,13 +310,13 @@ app.post('/login', (request, response) => {
 });
 
 // log out the user
-app.post('/logout', (request, response) => {
+app.delete('/logout', (request, response) => {
   request.session = null;
   response.redirect('/urls');
 });
 
 // Registration form data submission cehcks for missing credentials and exisiting emails
-app.post('/register', (request, response) => {
+app.put('/register', (request, response) => {
   const email = request.body.email;
   const password = request.body.password;
   if (!email || !password) {

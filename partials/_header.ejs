@@ -18,7 +18,7 @@
   <% if(user) { %>
   <h3> <%= user.email %>
   </h3>
-  <form id="logout" method="POST" action="/logout">
+  <form id="logout" method="POST" action="/logout?_method=DELETE">
   <input type="submit" value="Logout">
 </form>
 
