@@ -10,6 +10,18 @@ The /urls page lists all the short URLs created and allows the user to edit, del
 
 ## Screenshots
 
+####  Login
+[Login](./Screenshots/Login.png)
+
+####  New URL
+[New URL](./Screenshots/NewUrl.png)
+
+User can paste a URL and click to create a new Tiny URL.
+
+####  URL Index
+[URL Index](./Screenshots/Urlindex.png)
+
+Home dashboard of a sample user that shows all links created along with date created and number of visits.
 
 ## Dependencies
 - Node

@@ -21,8 +21,9 @@ app.use(cookieSession({
   keys: ['dobo986', 'jene787'],
   maxAge: 24 * 60 * 60 * 1000, // 24 hours
 }));
-
-// Database that stores short and long url pairs
+const samplePassword1 = hashPassword(123);
+const samplePassword2 = hashPassword("sum");
+// Sample database that stores short and long url pairs
 const urlDatabase = {
   b2xVn2: {
     longURL: 'http://www.lighthouselabs.ca',
@@ -38,17 +39,17 @@ const urlDatabase = {
   },
 };
 
-// User database
+// Sample user database
 const users = {
   abcde: {
     id: 'abcde',
     email: 'a@b.com',
-    password: hashPassword('123'),
+    password: samplePassword1,
   },
   dobo: {
     id: 'dobo',
     email: 'd@dobo.com',
-    password: hashPassword('sume'),
+    password: samplePassword2,
   },
 };
 
@@ -218,7 +219,7 @@ app.get('/urls/:id', (request, response) => {
     }
   } else {
     response.statusCode = 400;
-    response.send("Please log in to view!");
+    response.send('Please log in to view!');
   }
 });
 
@@ -246,7 +247,7 @@ app.get('/u/:shortURL', (request, response) => {
     response.redirect(longURL);
   } else {
     response.statusCode = 400;
-    response.send("Does not exist! Please check the Tiny URL.");
+    response.send('Does not exist! Please check the Tiny URL.');
   }
 });
 
