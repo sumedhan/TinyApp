@@ -21,37 +21,10 @@ app.use(cookieSession({
   keys: ['dobo986', 'jene787'],
   maxAge: 24 * 60 * 60 * 1000, // 24 hours
 }));
-const samplePassword1 = hashPassword(123);
-const samplePassword2 = hashPassword("sum");
-// Sample database that stores short and long url pairs
-const urlDatabase = {
-  b2xVn2: {
-    longURL: 'http://www.lighthouselabs.ca',
-    userID: 'abcde',
-    dateCreated: 'Jan 17th 2019',
-    numberOfVisits: 0,
-  },
-  '9sm5xK': {
-    longURL: 'http://www.google.com',
-    userID: 'dobo',
-    dateCreated: 'Jan 17th 2018',
-    numberOfVisits: 0,
-  },
-};
 
-// Sample user database
-const users = {
-  abcde: {
-    id: 'abcde',
-    email: 'a@b.com',
-    password: samplePassword1,
-  },
-  dobo: {
-    id: 'dobo',
-    email: 'd@dobo.com',
-    password: samplePassword2,
-  },
-};
+//  User and URL Database objects
+const users = {};
+const urlDatabase = {};
 
 //  Returns true if random string is valid (i.e. has not been used before in URLS or User ids)
 function checkUniqueString(randomString) {
@@ -82,24 +55,14 @@ function canUserBeRegistered(email) {
   return true;
 }
 
-// Function to hash password using bcrypt
-function hashPassword(password) {
-  return bcrypt.hashSync(password, 10);
-}
-
-// Function to check if password is correct
-function checkPassword(password, userID) {
-  return bcrypt.compareSync(password, users[userID].password);
-}
-
 // function to register a new user in the user database
 function registeruserId(email, password) {
   const uniqueUserId = generateRandomString();
-  const hashedPassword = hashPassword(password);
+  const hashedPassword = bcrypt.hashSync(password, 10);
   users[uniqueUserId] = {
     id: uniqueUserId,
     email,
-    hashedPassword,
+    password: hashedPassword,
   };
   return uniqueUserId;
 }
@@ -125,10 +88,7 @@ function findUserId(email) {
 // function to match the entered email and password to the database entries
 function passwordMatch(email, password) {
   const userID = findUserId(email);
-  if (checkPassword(password, userID)) {
-    return true;
-  }
-  return false;
+  return bcrypt.compareSync(password, users[userID].password);
 }
 
 // function creates a short URL in the database
@@ -226,6 +186,11 @@ app.get('/urls/:id', (request, response) => {
 // Path that returns current JSON of URLS
 app.get('/urls.json', (request, response) => {
   response.json(urlDatabase);
+});
+
+//  Path that returns current JSON of users
+app.get('/users.json', (request, response) => {
+  response.json(users);
 });
 
 // Returns a page that includes a form with an email and password
